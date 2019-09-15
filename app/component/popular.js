@@ -35,7 +35,7 @@ class Popular extends React.Component {
     super(props);
     this.state = {
       selectedLanguage: "All",
-      repos: null,
+      repos: {},
       error: null
     };
     //To make sure whenever and whereever this function is invoked it will be invoked in context of Popular
@@ -49,30 +49,42 @@ class Popular extends React.Component {
   }
 
   onUpdateLanguage(selectedLanguage) {
+    const { repos } = this.state;
     this.setState({
       selectedLanguage,
-      repos: null,
       error: null
     });
 
-    fetchRepos(selectedLanguage)
-      .then(repos => this.setState({ repos }))
-      .catch(() =>
-        this.setState({ error: "There was an error fetching this repository" })
-      );
+    !repos[selectedLanguage] &&
+      fetchRepos(selectedLanguage)
+        .then(repoList =>
+          this.setState(({ repos }) => ({
+            repos: { ...repos, [selectedLanguage]: repoList }
+          }))
+        )
+        .catch(() =>
+          this.setState({
+            error: "There was an error fetching this repository"
+          })
+        );
+
+    console.log(repos);
   }
 
   render() {
-    const { repos, error } = this.state;
+    const { repos, error, selectedLanguage } = this.state;
+    console.log(11, repos);
     return (
       <>
         <LanguagesNav
           selectedLanguage={this.state.selectedLanguage}
           onUpdateLanguage={this.onUpdateLanguage}
         />
-        {!repos && !error && <p>Loading...</p>}
+        {!repos[selectedLanguage] && !error && <p>Loading...</p>}
         {error && <p>{error}</p>}
-        {repos && <pre>{JSON.stringify(repos, null, 2)}</pre>}
+        {repos[selectedLanguage] && (
+          <pre>{JSON.stringify(repos[selectedLanguage], null, 2)}</pre>
+        )}
       </>
     );
   }

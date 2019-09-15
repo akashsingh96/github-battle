@@ -8,7 +8,6 @@ export function fetchRepos(languages) {
       if (!data.items) {
         throw new Error(data.message);
       }
-      console.log(data.items);
       return data.items;
     });
 }
