@@ -1,5 +1,6 @@
 import React from "react";
 import { FaUserFriends, FaFighterJet, FaTrophy } from "react-icons/fa";
+import { PropTypes } from "prop-types";
 
 function Instructions() {
   return (
@@ -27,11 +28,62 @@ function Instructions() {
   );
 }
 
+class PlayerInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { username: "" };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ username: event.target.value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.onSubmit(this.state.username);
+  }
+  render() {
+    return (
+      <form className="column player" onSubmit={this.handleSubmit}>
+        <label htmlFor="username" className="player-label">
+          {this.props.label}
+        </label>
+        <div className="row player-inputs">
+          <input
+            type="text"
+            id="username"
+            className="input-light"
+            placeholder="github username"
+            autoComplete="off"
+            onChange={this.handleChange}
+            value={this.state.username}
+          />
+          <button
+            type="submit"
+            className="btn dark-btn"
+            disabled={!this.state.username}
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    );
+  }
+}
+
+PlayerInput.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired
+};
+
 class Battle extends React.Component {
   render() {
     return (
       <>
         <Instructions />
+        <PlayerInput label="label" onSubmit={v => console.log(v)} />
       </>
     );
   }
