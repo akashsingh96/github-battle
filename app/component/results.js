@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 
 import { battle } from "../utils/api";
 import Card from "./card";
+import Loader from "./loader";
 
 function ProfileList({ profile }) {
   return (
@@ -76,7 +77,7 @@ class Results extends React.Component {
   render() {
     const { winner, loser, loading, error } = this.state;
     if (loading) {
-      return <p>Loading...</p>;
+      return <Loader text="fetching data" />;
     }
     if (error) {
       return <p className="center-text error">{error}</p>;

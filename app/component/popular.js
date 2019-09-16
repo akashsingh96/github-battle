@@ -9,6 +9,7 @@ import {
 
 import { fetchRepos } from "../utils/api";
 import Card from "./card";
+import Loader from "./loader";
 
 function LanguagesNav({ selectedLanguage, onUpdateLanguage }) {
   const languages = ["All", "Javascript", "Ruby", "Java", "CSS", "Python"];
@@ -131,7 +132,7 @@ class Popular extends React.Component {
           selectedLanguage={this.state.selectedLanguage}
           onUpdateLanguage={this.onUpdateLanguage}
         />
-        {!repos[selectedLanguage] && !error && <p>Loading...</p>}
+        {!repos[selectedLanguage] && !error && <Loader text="fetching data" />}
         {error && <p className="center-text error">{error}</p>}
         {repos[selectedLanguage] && (
           <ReposGrid repos={repos[selectedLanguage]} />
