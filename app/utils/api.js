@@ -3,9 +3,10 @@ const sec = "YOUR_SECRET_ID";
 const params = `?client_id=${id}&client_secret=${sec}`;
 
 function getErrorMessage(message, username) {
-  if (message === "NOT_FOUND") {
+  if (message === "Not Found") {
     return `${username} doesn't exist`;
   }
+
   return message;
 }
 
