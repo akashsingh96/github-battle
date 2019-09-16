@@ -4,13 +4,12 @@ import {
   FaBriefcase,
   FaUsers,
   FaUserFriends,
-  FaCode,
   FaUser
 } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 import { battle } from "../utils/api";
 import Card from "./card";
-import PropTypes from "prop-types";
 
 function ProfileList({ profile }) {
   return (
@@ -83,28 +82,39 @@ class Results extends React.Component {
       return <p className="center-text error">{error}</p>;
     }
     return (
-      <div className="grid space-around container-sm">
-        <Card
-          header={winner.score === loser.score ? "Tie" : "Winner"}
-          avatar={winner.profile.avatar_url}
-          login={winner.profile.login}
-          subheader={`Score: ${winner.score.toLocaleString()}`}
-          href={winner.profile.html_url}
-        >
-          <ProfileList profile={winner.profile} />
-        </Card>
-        <Card
-          header={winner.score === loser.score ? "Tie" : "Loser"}
-          avatar={loser.profile.avatar_url}
-          login={loser.profile.login}
-          subheader={`Score: ${loser.score.toLocaleString()}`}
-          href={loser.profile.html_url}
-        >
-          <ProfileList profile={loser.profile} />
-        </Card>
-      </div>
+      <>
+        <div className="grid space-around container-sm">
+          <Card
+            header={winner.score === loser.score ? "Tie" : "Winner"}
+            avatar={winner.profile.avatar_url}
+            login={winner.profile.login}
+            subheader={`Score: ${winner.score.toLocaleString()}`}
+            href={winner.profile.html_url}
+          >
+            <ProfileList profile={winner.profile} />
+          </Card>
+          <Card
+            header={winner.score === loser.score ? "Tie" : "Loser"}
+            avatar={loser.profile.avatar_url}
+            login={loser.profile.login}
+            subheader={`Score: ${loser.score.toLocaleString()}`}
+            href={loser.profile.html_url}
+          >
+            <ProfileList profile={loser.profile} />
+          </Card>
+        </div>
+        <button className="btn dark-btn btn-space" onClick={this.props.onReset}>
+          Reset
+        </button>
+      </>
     );
   }
 }
+
+Results.propTypes = {
+  playerOne: PropTypes.string.isRequired,
+  playerTwo: PropTypes.string.isRequired,
+  onReset: PropTypes.func.isRequired
+};
 
 export default Results;

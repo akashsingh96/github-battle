@@ -140,7 +140,20 @@ class Battle extends React.Component {
 
   render() {
     const { playerOne, playerTwo, battle } = this.state;
-    if (battle) return <Results playerOne={playerOne} playerTwo={playerTwo} />;
+    if (battle)
+      return (
+        <Results
+          playerOne={playerOne}
+          playerTwo={playerTwo}
+          onReset={() =>
+            this.setState({
+              playerOne: null,
+              playerTwo: null,
+              battle: false
+            })
+          }
+        />
+      );
 
     return (
       <>
