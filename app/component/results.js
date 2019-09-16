@@ -25,7 +25,7 @@ class Results extends React.Component {
       )
       .catch(e =>
         //   console.log(12, e, 14, e.message) ||
-        this.setState({ error: e.message })
+        this.setState({ error: e.message, loading: false })
       );
   }
   render() {
