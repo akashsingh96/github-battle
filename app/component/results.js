@@ -11,19 +11,24 @@ import PropTypes from "prop-types";
 import { battle } from "../utils/api";
 import Card from "./card";
 import Loader from "./loader";
+import Tooltip from "./tooltip";
 
 function ProfileList({ profile }) {
   return (
     <ul className="card-list">
-      <li>
-        <FaUser color="rgb(239, 115, 115)" size={22} />
-        {profile.name}
-      </li>
-      {profile.location && (
+      <Tooltip text="User's name">
         <li>
-          <FaCompass color="rgb(144, 115, 255)" size={22} />
-          {profile.location}
+          <FaUser color="rgb(239, 115, 115)" size={22} />
+          {profile.name}
         </li>
+      </Tooltip>
+      {profile.location && (
+        <Tooltip text="User's location">
+          <li>
+            <FaCompass color="rgb(144, 115, 255)" size={22} />
+            {profile.location}
+          </li>
+        </Tooltip>
       )}
       {profile.company && (
         <li>

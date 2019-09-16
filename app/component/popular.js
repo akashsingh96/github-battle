@@ -10,6 +10,7 @@ import {
 import { fetchRepos } from "../utils/api";
 import Card from "./card";
 import Loader from "./loader";
+import Tooltip from "./tooltip";
 
 function LanguagesNav({ selectedLanguage, onUpdateLanguage }) {
   const languages = ["All", "Javascript", "Ruby", "Java", "CSS", "Python"];
@@ -55,10 +56,12 @@ function ReposGrid({ repos }) {
               login={login}
             >
               <ul className="card-list">
-                <li>
-                  <FaUser color="rgb(255, 191, 116)" size={22} />
-                  <a href={`https://github.com/${login}`}>{login}</a>
-                </li>
+                <Tooltip text="Github username">
+                  <li>
+                    <FaUser color="rgb(255, 191, 116)" size={22} />
+                    <a href={`https://github.com/${login}`}>{login}</a>
+                  </li>
+                </Tooltip>
                 <li>
                   <FaStar color="rgb(255, 215, 0)" size={22} />
                   {stargazers_count.toLocaleString()} stars
