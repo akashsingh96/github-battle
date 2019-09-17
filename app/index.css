@@ -1,4 +1,6 @@
-html body #app {
+html,
+body,
+#app {
   margin: 0;
   height: 100%;
   width: 100%;
@@ -23,6 +25,12 @@ li {
   padding: 50px;
 }
 
+.dark {
+  color: #dadada;
+  background: #1c2022;
+  min-height: 100%;
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -30,8 +38,8 @@ li {
 }
 
 .btn-clear {
-  background-color: transparent;
   border: none;
+  background: transparent;
 }
 
 .nav-link {
@@ -76,6 +84,7 @@ li {
 
 .link {
   color: rgb(187, 46, 31);
+  text-decoration: none;
   font-weight: bold;
 }
 
@@ -84,14 +93,14 @@ li {
   font-size: 20px;
 }
 
-.card-list svg {
-  margin-right: 3px;
-}
-
 .card-list li {
   display: flex;
   align-items: center;
   margin: 10px;
+}
+
+.card-list svg {
+  margin-right: 10px;
 }
 
 .card-list a {
@@ -207,7 +216,7 @@ li {
   color: #c7c7c7;
 }
 
-.player-container {
+.players-container {
   margin: 100px 0;
 }
 
@@ -235,12 +244,26 @@ li {
 
 .error {
   color: #ff1616;
-  margin: 50px 0;
   font-size: 20px;
+  margin: 50px 0;
 }
 
-.dark {
-  min-height: 100%;
+.bg-dark {
+  background: rgb(36, 40, 42);
+  border-radius: 3px;
+}
+
+.player-inputs .input-dark {
   color: #dadada;
-  background-color: #1c2022;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.light-btn {
+  color: #000;
+  background: #aaa8a8;
+}
+
+.light-btn:disabled {
+  background: #292929;
+  color: #4a4a4a;
 }
