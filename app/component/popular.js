@@ -128,7 +128,6 @@ class Popular extends React.Component {
 
   render() {
     const { repos, error, selectedLanguage } = this.state;
-    console.log(11, repos);
     return (
       <>
         <LanguagesNav
