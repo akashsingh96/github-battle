@@ -238,3 +238,9 @@ li {
   margin: 50px 0;
   font-size: 20px;
 }
+
+.dark {
+  min-height: 100%;
+  color: #dadada;
+  background-color: #1c2022;
+}
