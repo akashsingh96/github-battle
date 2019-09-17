@@ -10,16 +10,14 @@ import Nav from "./component/nav";
 import Results from "./component/results";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      theme: "light",
-      toggleTheme: () =>
-        this.setState(({ theme }) => ({
-          theme: theme === "light" ? "dark" : "light"
-        }))
-    };
-  }
+  state = {
+    theme: "light",
+    toggleTheme: () =>
+      this.setState(({ theme }) => ({
+        theme: theme === "light" ? "dark" : "light"
+      }))
+  };
+
   render() {
     return (
       <Router>

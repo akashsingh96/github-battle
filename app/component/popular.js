@@ -88,24 +88,18 @@ ReposGrid.propTypes = {
 };
 
 class Popular extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedLanguage: "All",
-      repos: {},
-      error: null
-    };
-    //To make sure whenever and whereever this function is invoked it will be invoked in context of Popular
-    this.onUpdateLanguage = this.onUpdateLanguage.bind(this);
-    //now this keyword will reference component instance of Popular not LanguagesNav
-  }
+  state = {
+    selectedLanguage: "All",
+    repos: {},
+    error: null
+  };
 
   componentDidMount() {
     const { selectedLanguage } = this.state;
     this.onUpdateLanguage(selectedLanguage);
   }
 
-  onUpdateLanguage(selectedLanguage) {
+  onUpdateLanguage = selectedLanguage => {
     const { repos } = this.state;
     this.setState({
       selectedLanguage,
@@ -124,7 +118,7 @@ class Popular extends React.Component {
             error: "There was an error fetching this repository"
           })
         );
-  }
+  };
 
   render() {
     const { repos, error, selectedLanguage } = this.state;

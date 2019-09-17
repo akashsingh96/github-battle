@@ -13,12 +13,9 @@ const styles = {
 };
 
 class Loader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: props.text
-    };
-  }
+  state = {
+    message: this.props.text
+  };
 
   componentDidMount() {
     const { text, speed } = this.props;
