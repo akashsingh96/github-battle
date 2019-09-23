@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {
   FaCompass,
   FaBriefcase,
@@ -6,8 +6,8 @@ import {
   FaUserFriends,
   FaUser
 } from "react-icons/fa";
-import PropTypes from "prop-types";
-import queryString from "query-string";
+import { RouteProps } from "react-router";
+import * as queryString from "query-string";
 import { Link } from "react-router-dom";
 
 import { battle } from "../utils/api";
@@ -15,7 +15,21 @@ import Card from "./card";
 import Loader from "./loader";
 import Tooltip from "./tooltip";
 
-function ProfileList({ profile }) {
+export interface IProfileList {
+  name: string;
+  location?: string;
+  company: string;
+  followers: number;
+  following: number;
+  avatar_url: string;
+  login: string;
+  html_url: string;
+}
+interface IProfileListProps {
+  profile: IProfileList;
+}
+
+function ProfileList({ profile }: IProfileListProps) {
   return (
     <ul className="card-list">
       <Tooltip text="User's name">
@@ -50,24 +64,25 @@ function ProfileList({ profile }) {
   );
 }
 
-ProfileList.protoTypes = {
-  profile: PropTypes.object.isRequired
-};
+interface IResultsState {
+  winner?: { score: number; profile: IProfileList };
+  loser?: { score: number; profile: IProfileList };
+  error: string | null;
+  loading: boolean;
+}
 
-class Results extends React.Component {
-  state = {
-    winner: null,
-    loser: null,
+class Results extends React.Component<RouteProps, IResultsState> {
+  state: IResultsState = {
     error: null,
     loading: true
   };
 
   componentDidMount() {
     const { playerOne, playerTwo } = queryString.parse(
-      this.props.location.search
+      this.props.location!.search
     );
 
-    battle([playerOne, playerTwo])
+    battle([playerOne, playerTwo] as string[])
       .then(players =>
         this.setState({
           winner: players[0],
@@ -94,22 +109,22 @@ class Results extends React.Component {
       <>
         <div className="grid space-around container-sm">
           <Card
-            header={winner.score === loser.score ? "Tie" : "Winner"}
-            avatar={winner.profile.avatar_url}
-            login={winner.profile.login}
-            subheader={`Score: ${winner.score.toLocaleString()}`}
-            href={winner.profile.html_url}
+            header={winner!.score === loser!.score ? "Tie" : "Winner"}
+            avatar={winner!.profile.avatar_url}
+            login={winner!.profile.login}
+            subheader={`Score: ${winner!.score.toLocaleString()}`}
+            href={winner!.profile.html_url}
           >
-            <ProfileList profile={winner.profile} />
+            <ProfileList profile={winner!.profile} />
           </Card>
           <Card
-            header={winner.score === loser.score ? "Tie" : "Loser"}
-            avatar={loser.profile.avatar_url}
-            login={loser.profile.login}
-            subheader={`Score: ${loser.score.toLocaleString()}`}
-            href={loser.profile.html_url}
+            header={winner!.score === loser!.score ? "Tie" : "Loser"}
+            avatar={loser!.profile.avatar_url}
+            login={loser!.profile.login}
+            subheader={`Score: ${loser!.score.toLocaleString()}`}
+            href={loser!.profile.html_url}
           >
-            <ProfileList profile={loser.profile} />
+            <ProfileList profile={loser!.profile} />
           </Card>
         </div>
         <Link className="btn dark-btn btn-space" to="/battle">

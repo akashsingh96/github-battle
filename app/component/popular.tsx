@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 import {
   FaUser,
   FaStar,
@@ -12,8 +11,25 @@ import Card from "./card";
 import Loader from "./loader";
 import Tooltip from "./tooltip";
 
-function LanguagesNav({ selectedLanguage, onUpdateLanguage }) {
-  const languages = ["All", "Javascript", "Ruby", "Java", "CSS", "Python"];
+interface ILanguagesProps {
+  selectedLanguage: string;
+  onUpdateLanguage: (language: string) => void;
+}
+
+export interface IRepoList {
+  owner: { login: string; avatar_url: string };
+  html_url: string;
+  stargazers_count: number;
+  forks: number;
+  open_issues: number;
+}
+
+interface IReposGridProps {
+  repos: IRepoList[];
+}
+
+function LanguagesNav({ selectedLanguage, onUpdateLanguage }: ILanguagesProps) {
+  const languages = ["All", "JavaScript", "Ruby", "Java", "CSS", "Python"];
   return (
     <ul className="flex-center">
       {languages.map(language => (
@@ -21,11 +37,11 @@ function LanguagesNav({ selectedLanguage, onUpdateLanguage }) {
           <button
             className="btn-clear nav-link"
             onClick={() => onUpdateLanguage(language)}
-            style={
-              language === selectedLanguage
-                ? { color: "rgb(187, 47, 31) " }
-                : null
-            }
+            style={{
+              color:
+                language === selectedLanguage ? "rgb(187, 47, 31)" : "initial",
+              cursor: "pointer"
+            }}
           >
             {language}
           </button>
@@ -35,12 +51,7 @@ function LanguagesNav({ selectedLanguage, onUpdateLanguage }) {
   );
 }
 
-LanguagesNav.propTypes = {
-  selectedLanguage: PropTypes.string.isRequired,
-  onUpdateLanguage: PropTypes.func.isRequired
-};
-
-function ReposGrid({ repos }) {
+function ReposGrid({ repos }: IReposGridProps) {
   return (
     <ul className="grid space-around">
       {repos.map((repo, index) => {
@@ -82,33 +93,33 @@ function ReposGrid({ repos }) {
     </ul>
   );
 }
-
-ReposGrid.propTypes = {
-  repos: PropTypes.array.isRequired
-};
-
-class Popular extends React.Component {
-  state = {
+interface IPopularState {
+  selectedLanguage: string;
+  error: string | null;
+  repos: Record<string, IRepoList[]>; ///fix this
+}
+class Popular extends React.Component<{}, IPopularState> {
+  state: IPopularState = {
     selectedLanguage: "All",
     repos: {},
     error: null
   };
 
-  componentDidMount() {
+  public componentDidMount() {
     const { selectedLanguage } = this.state;
     this.onUpdateLanguage(selectedLanguage);
   }
 
-  onUpdateLanguage = selectedLanguage => {
+  private onUpdateLanguage = (selectedLanguage: string) => {
     const { repos } = this.state;
     this.setState({
       selectedLanguage,
       error: null
     });
 
-    !repos[selectedLanguage] &&
+    if (!repos[selectedLanguage]) {
       fetchRepos(selectedLanguage)
-        .then(repoList =>
+        .then((repoList: IRepoList[]) =>
           this.setState(({ repos }) => ({
             repos: { ...repos, [selectedLanguage]: repoList }
           }))
@@ -118,9 +129,10 @@ class Popular extends React.Component {
             error: "There was an error fetching this repository"
           })
         );
+    }
   };
 
-  render() {
+  public render() {
     const { repos, error, selectedLanguage } = this.state;
     return (
       <>

@@ -1,6 +1,13 @@
-import React from "react";
+import * as React from "react";
 
-class Hover extends React.Component {
+interface IHoverProps {
+  children: (hovering: boolean) => React.ReactNode;
+}
+
+interface IHoverState {
+  hovering: boolean;
+}
+class Hover extends React.Component<IHoverProps, IHoverState> {
   state = { hovering: false };
 
   mouseOver = () => this.setState({ hovering: true });
@@ -11,6 +18,7 @@ class Hover extends React.Component {
     const { hovering } = this.state;
     return (
       <div onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>
+        {/* How to fix this issue */}
         {this.props.children(hovering)}
       </div>
     );

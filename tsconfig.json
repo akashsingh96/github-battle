@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "sourceMap": true, // Generates corresponding .map file.
+    "module": "commonjs",
+    "target": "es5", // signifies which target of JavaScript should be emitted from the given TypeScript
+    "jsx": "react", // Support JSX in .tsx files
+    "strict": true // Enable all strict type checking options.
+  },
+  "include": ["app"],
+  "exclude": ["dist", "node_modules"]
+}

@@ -1,8 +1,11 @@
+import { IRepoList } from "../component/popular";
+import { IProfileList } from "../component/results";
+
 const id = "YOUR_CLIENT_ID";
 const sec = "YOUR_SECRET_ID";
 const params = `?client_id=${id}&client_secret=${sec}`;
 
-function getErrorMessage(message, username) {
+function getErrorMessage(message: string, username: string) {
   if (message === "Not Found") {
     return `${username} doesn't exist`;
   }
@@ -10,7 +13,7 @@ function getErrorMessage(message, username) {
   return message;
 }
 
-function getProfile(username) {
+function getProfile(username: string) {
   return fetch(`https://api.github.com/users/${username}${params}`)
     .then(res => res.json())
     .then(profile => {
@@ -20,7 +23,7 @@ function getProfile(username) {
     });
 }
 
-function getRepos(username) {
+function getRepos(username: string) {
   return fetch(
     `https://api.github.com/users/${username}/repos${params}&per_page=100`
   )
@@ -32,17 +35,17 @@ function getRepos(username) {
     });
 }
 
-function getStarCount(repos) {
+function getStarCount(repos: IRepoList[]) {
   return repos.reduce(
     (total, { stargazers_count }) => total + stargazers_count,
     0
   );
 }
-function calculate(followers, repos) {
+function calculate(followers: number, repos: IRepoList[]) {
   return followers * 3 + getStarCount(repos);
 }
 
-function getUserData(player) {
+function getUserData(player: string) {
   return Promise.all([getProfile(player), getRepos(player)]).then(
     ([profile, repos]) => ({
       profile,
@@ -51,17 +54,17 @@ function getUserData(player) {
   );
 }
 
-function sortPlayers(players) {
+function sortPlayers(players: { score: number; profile: IProfileList }[]) {
   return players.sort((a, b) => b.score - a.score);
 }
 
-export function battle(players) {
+export function battle(players: string[]) {
   return Promise.all([getUserData(players[0]), getUserData(players[1])]).then(
     results => sortPlayers(results)
   );
 }
 
-export function fetchRepos(languages) {
+export function fetchRepos(languages: string) {
   const url = window.encodeURI(
     `https://api.github.com/search/repositories?q=stars:>1+language:${languages}&sort=stars&order=desc&type=Repositories`
   );

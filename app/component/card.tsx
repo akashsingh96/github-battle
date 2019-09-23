@@ -1,7 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 import { ThemeConsumer } from "../contexts/theme";
 
+interface ICardProps {
+  header: string;
+  subheader?: string;
+  avatar: string;
+  href: string;
+  login: string;
+  children: React.ReactNode; // Should it be React.ReactElement or React.ReactNode
+}
 export default function Card({
   header,
   subheader,
@@ -9,7 +16,7 @@ export default function Card({
   href,
   login,
   children
-}) {
+}: ICardProps) {
   return (
     <ThemeConsumer>
       {({ theme }) => (
@@ -28,11 +35,3 @@ export default function Card({
     </ThemeConsumer>
   );
 }
-
-Card.propTypes = {
-  header: PropTypes.string.isRequired,
-  subheader: PropTypes.string,
-  avatar: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-  login: PropTypes.string.isRequired
-};

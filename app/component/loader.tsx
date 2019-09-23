@@ -1,7 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 
-const styles = {
+//How to use them with the typescript??
+
+const styles: Record<string, React.CSSProperties> = {
   message: {
     fontSize: "35px",
     position: "absolute",
@@ -12,12 +13,25 @@ const styles = {
   }
 };
 
-class Loader extends React.Component {
+interface IProps {
+  speed: number;
+  text: string;
+}
+
+interface IState {
+  message: string;
+}
+
+class Loader extends React.Component<IProps, IState> {
   state = {
     message: this.props.text
   };
-
-  componentDidMount() {
+  private interval: number | undefined;
+  static defaultProps = {
+    speed: 200,
+    text: `Loading`
+  };
+  public componentDidMount() {
     const { text, speed } = this.props;
     this.interval = window.setInterval(() => {
       this.state.message === `${text}...`
@@ -26,19 +40,14 @@ class Loader extends React.Component {
     }, speed);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     window.clearInterval(this.interval);
   }
 
-  render() {
+  public render() {
     return <div style={styles.message}>{this.state.message}</div>;
   }
 }
-
-Loader.propTypes = {
-  speed: PropTypes.number,
-  text: PropTypes.string
-};
 
 Loader.defaultProps = {
   speed: 200,

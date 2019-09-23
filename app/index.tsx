@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDom from "react-dom";
+import * as React from "react";
+import * as ReactDom from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./index.css";
@@ -11,7 +11,12 @@ const Popular = React.lazy(() => import("./component/popular"));
 const Battle = React.lazy(() => import("./component/battle"));
 const Results = React.lazy(() => import("./component/results"));
 
-class App extends React.Component {
+export interface IState {
+  theme: string;
+  toggleTheme: () => void;
+}
+
+class App extends React.Component<{}, IState> {
   state = {
     theme: "light",
     toggleTheme: () =>

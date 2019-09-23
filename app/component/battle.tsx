@@ -1,14 +1,27 @@
-import React from "react";
+import * as React from "react";
 import {
   FaUserFriends,
   FaFighterJet,
   FaTrophy,
   FaTimesCircle
 } from "react-icons/fa";
-import { PropTypes } from "prop-types";
 import { Link } from "react-router-dom";
 
 import { ThemeConsumer } from "../contexts/theme";
+
+interface IPlayerInputState {
+  username: string;
+}
+interface IPlayerInputProps {
+  label: string;
+  onSubmit: (player: string) => void;
+}
+
+interface IPlayerPreviewProps {
+  username?: string;
+  onReset: () => void;
+  label: string;
+}
 
 function Instructions() {
   return (
@@ -48,12 +61,16 @@ function Instructions() {
   );
 }
 
-class PlayerInput extends React.Component {
+class PlayerInput extends React.Component<
+  IPlayerInputProps,
+  IPlayerInputState
+> {
   state = { username: "" };
 
-  handleChange = event => this.setState({ username: event.target.value });
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ username: event.target.value });
 
-  handleSubmit = event => {
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     this.props.onSubmit(this.state.username);
   };
@@ -91,12 +108,7 @@ class PlayerInput extends React.Component {
   }
 }
 
-PlayerInput.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired
-};
-
-function PlayerPreview({ username, onReset, label }) {
+function PlayerPreview({ username, onReset, label }: IPlayerPreviewProps) {
   return (
     <ThemeConsumer>
       {({ theme }) => (
@@ -123,21 +135,17 @@ function PlayerPreview({ username, onReset, label }) {
   );
 }
 
-PlayerPreview.propTypes = {
-  username: PropTypes.string.isRequired,
-  onReset: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired
-};
+interface IBattleState {
+  playerOne?: string;
+  playerTwo?: string;
+}
 
-class Battle extends React.Component {
-  state = {
-    playerOne: null,
-    playerTwo: null
-  };
+class Battle extends React.Component<{}, IBattleState> {
+  state: IBattleState = {};
+  handleSubmit = (id: keyof IBattleState, player: string) =>
+    this.setState({ [id]: player });
 
-  handleSubmit = (id, player) => this.setState({ [id]: player });
-
-  handleReset = id => this.setState({ [id]: null });
+  handleReset = (id: keyof IBattleState) => this.setState({ [id]: undefined });
 
   render() {
     const { playerOne, playerTwo } = this.state;
@@ -151,7 +159,9 @@ class Battle extends React.Component {
             {!playerOne ? (
               <PlayerInput
                 label="Player One"
-                onSubmit={player => this.handleSubmit("playerOne", player)}
+                onSubmit={(player: string) =>
+                  this.handleSubmit("playerOne", player)
+                }
               />
             ) : (
               <PlayerPreview

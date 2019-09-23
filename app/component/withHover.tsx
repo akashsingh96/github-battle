@@ -1,7 +1,20 @@
-import React from "react";
+import * as React from "react";
 
-function withHover(Component, propName = "hovering") {
-  return class WithHover extends React.Component {
+// interface IwithHoverProps{
+//   Component:React.ReactNode,
+//   propName:string
+// }
+
+// Using HOC with typescript
+
+interface IWithHoverProps {
+  propName?: string;
+}
+function withHover<P extends object>(
+  Component: React.ComponentType<P>,
+  propName = "hovering"
+) {
+  return class WithHover extends React.Component<P & IWithHoverProps> {
     state = {
       hovering: false
     };
