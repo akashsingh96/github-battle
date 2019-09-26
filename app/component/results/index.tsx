@@ -1,19 +1,13 @@
 import * as React from "react";
-import {
-  FaCompass,
-  FaBriefcase,
-  FaUsers,
-  FaUserFriends,
-  FaUser
-} from "react-icons/fa";
 import { RouteProps } from "react-router";
 import * as queryString from "query-string";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import { battle } from "../utils/api";
-import Card from "./card";
-import Loader from "./loader";
-import Tooltip from "./tooltip";
+import { battle } from "../../utils/api";
+import Card from "../card";
+import Loader from "../loader";
+import { ProfileList } from "./ProfileList";
 
 export interface IProfileList {
   name: string;
@@ -25,44 +19,6 @@ export interface IProfileList {
   login: string;
   html_url: string;
 }
-interface IProfileListProps {
-  profile: IProfileList;
-}
-
-function ProfileList({ profile }: IProfileListProps) {
-  return (
-    <ul className="card-list">
-      <Tooltip text="User's name">
-        <li>
-          <FaUser color="rgb(239, 115, 115)" size={22} />
-          {profile.name}
-        </li>
-      </Tooltip>
-      {profile.location && (
-        <Tooltip text="User's location">
-          <li>
-            <FaCompass color="rgb(144, 115, 255)" size={22} />
-            {profile.location}
-          </li>
-        </Tooltip>
-      )}
-      {profile.company && (
-        <li>
-          <FaBriefcase color="#795548" size={22} />
-          {profile.company}
-        </li>
-      )}
-      <li>
-        <FaUsers color="rgb(129, 195, 245)" size={22} />
-        {profile.followers.toLocaleString()} followers
-      </li>
-      <li>
-        <FaUserFriends color="rgb(64, 183, 95)" size={22} />
-        {profile.following.toLocaleString()} following
-      </li>
-    </ul>
-  );
-}
 
 interface IResultsState {
   winner?: { score: number; profile: IProfileList };
@@ -70,6 +26,39 @@ interface IResultsState {
   error: string | null;
   loading: boolean;
 }
+
+const CardWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 80%;
+  margin: 0 auto;
+`;
+
+const StyledError = styled.p`
+  text-align: center;
+  color: #ff1616;
+  font-size: 20px;
+  margin: 50px 0;
+`;
+
+const StyledLink = styled(Link)`
+  padding: 10px;
+  text-decoration: uppercase;
+  letter-spacing: 0.25em;
+  border-radius: 3px;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  max-width: 200px;
+  margin: 40px auto;
+  color: #e6e6e6;
+  background: #141414;
+`;
 
 class Results extends React.Component<RouteProps, IResultsState> {
   state: IResultsState = {
@@ -91,10 +80,7 @@ class Results extends React.Component<RouteProps, IResultsState> {
           loading: false
         })
       )
-      .catch(e =>
-        //   console.log(12, e, 14, e.message) ||
-        this.setState({ error: e.message, loading: false })
-      );
+      .catch(e => this.setState({ error: e.message, loading: false }));
   }
 
   render() {
@@ -103,11 +89,11 @@ class Results extends React.Component<RouteProps, IResultsState> {
       return <Loader text="fetching data" />;
     }
     if (error) {
-      return <p className="center-text error">{error}</p>;
+      return <StyledError>{error}</StyledError>;
     }
     return (
       <>
-        <div className="grid space-around container-sm">
+        <CardWrapper>
           <Card
             header={winner!.score === loser!.score ? "Tie" : "Winner"}
             avatar={winner!.profile.avatar_url}
@@ -126,10 +112,8 @@ class Results extends React.Component<RouteProps, IResultsState> {
           >
             <ProfileList profile={loser!.profile} />
           </Card>
-        </div>
-        <Link className="btn dark-btn btn-space" to="/battle">
-          Reset
-        </Link>
+        </CardWrapper>
+        <StyledLink to="/battle">Reset</StyledLink>
       </>
     );
   }

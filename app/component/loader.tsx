@@ -1,26 +1,23 @@
 import * as React from "react";
+import styled from "styled-components";
 
-//How to use them with the typescript??
-
-const styles: Record<string, React.CSSProperties> = {
-  message: {
-    fontSize: "35px",
-    position: "absolute",
-    left: "0",
-    right: "0",
-    marginTop: "20px",
-    textAlign: "center"
-  }
-};
+interface IState {
+  message: string;
+}
 
 interface IProps {
   speed: number;
   text: string;
 }
 
-interface IState {
-  message: string;
-}
+const StyledLoader = styled.div`
+  font-size: 35px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: 20px;
+  text-align: center;
+`;
 
 class Loader extends React.Component<IProps, IState> {
   state = {
@@ -45,7 +42,7 @@ class Loader extends React.Component<IProps, IState> {
   }
 
   public render() {
-    return <div style={styles.message}>{this.state.message}</div>;
+    return <StyledLoader>{this.state.message}</StyledLoader>;
   }
 }
 
